@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <h3 class="modal-title">Kinase: {{name}}</h3>
+</div>
+<div class="modal-body">
+  <p>
+    <b>UniProt Acc:</b> {{uni["Entry"]}}<br>
+    <b>Gene name:</b> {{uni["Gene names"]}}<br>
+    <b>Protein names:</b> {{uni["Protein names"]}}<br>
+    <b>Functional description:</b> {{uni["Function [CC]"].replace("FUNCTION: ", "")}}
+  </p>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-secondary" (click)="modal.dismiss()">Close</button>
+</div>
