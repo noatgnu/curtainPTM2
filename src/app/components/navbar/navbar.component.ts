@@ -31,7 +31,8 @@ export class NavbarComponent implements OnInit {
       selectionsName: this.data.selectOperationNames,
       dbIDMap: this.data.dbIDMap,
       fetchUniProt: this.data.fetchUniProt,
-      annotatedData: this.data.annotatedData
+      annotatedData: this.data.annotatedData,
+      annotatedMap: this.data.annotatedMap
     }
     this.web.putSettings(data).subscribe(data => {
       if (data.body) {

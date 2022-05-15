@@ -82,6 +82,9 @@ export class HomeComponent implements OnInit {
         if (object.annotatedData) {
           this.data.annotatedData = object.annotatedData
         }
+        if (object.annotatedMap) {
+          this.data.annotatedMap = object.annotatedMap
+        }
         if (object.dbIDMap) {
           this.data.dbIDMap = object.dbIDMap
         }

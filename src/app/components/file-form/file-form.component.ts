@@ -74,19 +74,26 @@ export class FileFormComponent implements OnInit {
     const totalSampleNumber = this.data.rawForm.samples.length
     let sampleNumber = 0
     const conditions: string[] = []
+    let colorPosition = 0
+    const colorMap: any = {}
     for (const s of this.data.rawForm.samples) {
       const condition_replicate = s.split(".")
       const replicate = condition_replicate[condition_replicate.length-1]
       const condition = condition_replicate.slice(0, condition_replicate.length-1).join(".")
       if (!conditions.includes(condition)) {
         conditions.push(condition)
+        if (colorPosition >= this.data.defaultColorList.length) {
+          colorPosition = 0
+        }
+        colorMap[condition] = this.data.defaultColorList[colorPosition]
+        colorPosition ++
       }
       this.data.sampleMap[s] = {replicate: replicate, condition: condition}
       this.data.raw.df = this.data.raw.df.withSeries(s, new Series(this.convertToNumber(this.data.raw.df.getSeries(s).toArray()))).bake()
       sampleNumber ++
       this.updateProgressBar(sampleNumber*100/totalSampleNumber, "Processed "+s+" sample data")
     }
-
+    this.data.colorMap = colorMap
     const currentDF = this.data.differential.df.where(r => r[this.data.differentialForm.comparison] === this.data.differentialForm.comparisonSelect)
     const fc = currentDF.getSeries(this.data.differentialForm.foldChange).where(i => !isNaN(i)).bake()
     const sign = currentDF.getSeries(this.data.differentialForm.significant).where(i => !isNaN(i)).bake()
@@ -101,12 +108,13 @@ export class FileFormComponent implements OnInit {
     this.data.currentDF = this.data.currentDF.withSeries(this.data.differentialForm.positionPeptide, new Series(this.convertToNumber(this.data.currentDF.getSeries(this.data.differentialForm.positionPeptide).toArray()))).bake()
     this.data.conditions = conditions
     this.data.currentDF = this.data.currentDF.withSeries(this.data.differentialForm.foldChange, new Series(this.convertToNumber(this.data.currentDF.getSeries(this.data.differentialForm.foldChange).toArray()))).bake()
+    this.data.currentDF = this.data.currentDF.withSeries(this.data.differentialForm.significant, new Series(this.convertToNumber(this.data.currentDF.getSeries(this.data.differentialForm.significant).toArray()))).bake()
     this.data.currentDF = this.data.currentDF.withSeries(this.data.differentialForm.score, new Series(this.convertToNumber(this.data.currentDF.getSeries(this.data.differentialForm.score).toArray()))).bake()
     if (this.data.differentialForm.transformFC) {
       this.data.currentDF = this.data.currentDF.withSeries(this.data.differentialForm.foldChange, new Series(this.log2Convert(this.data.currentDF.getSeries(this.data.differentialForm.foldChange).toArray()))).bake()
     }
     this.updateProgressBar(50, "Processed fold change")
-    if (this.data.differentialForm.transformFC) {
+    if (this.data.differentialForm.significant) {
       this.data.differential.df = this.data.differential.df.withSeries(this.data.differentialForm.significant, new Series(this.convertToNumber(this.data.differential.df.getSeries(this.data.differentialForm.significant).toArray()))).bake()
     }
     if (this.data.differentialForm.transformSignificant) {

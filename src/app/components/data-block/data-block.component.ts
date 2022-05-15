@@ -20,6 +20,9 @@ export class DataBlockComponent implements OnInit {
   allSequences: any = {}
   aligned: boolean = false
   sourceMap: any = {}
+
+  toggled: string = ""
+
   @Input() set data(value: IDataFrame) {
     this._data = value.orderBy(r => r[this.dataService.differentialForm.position]).bake()
     if (this._data.count() > 0) {
@@ -63,7 +66,14 @@ export class DataBlockComponent implements OnInit {
 
   ngOnInit(): void {
   }
-  scrollTop() {
+
+
+
+  scrollTop(toggleUID: string) {
+    if (toggleUID !== "") {
+      this.toggled = ""
+      this.toggled = toggleUID
+    }
     this.scroll.scrollToID("volcanoNcyto")
   }
 }

@@ -30,6 +30,13 @@ export class RawDataComponent implements OnInit {
     rawData.forEach(row => this.rawDataMap[row[this.dataService.rawForm.primaryIDs]] = row)
   }
 
+  @Input() set toggle(value: string) {
+    if (value !== "") {
+      this.annotateMap[value] = !this.annotateMap[value]
+      console.log(this.annotateMap[value])
+      this.annotate(value)
+    }
+  }
   sortReverse: any = {}
 
   get data(): any[] {
@@ -60,6 +67,7 @@ export class RawDataComponent implements OnInit {
   }
 
   annotate(uid: string) {
+    console.log(uid)
     let remove = false
     if (!this.annotateMap[uid]) {
       remove = true
@@ -68,6 +76,6 @@ export class RawDataComponent implements OnInit {
       id: uid,
       remove: remove
     })
-    this.dataService.annotatedData[uid] = this.annotateMap[uid]
+    this.dataService.annotatedMap[uid] = this.annotateMap[uid]
   }
 }
