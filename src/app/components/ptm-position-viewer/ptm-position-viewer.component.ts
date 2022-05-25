@@ -39,6 +39,7 @@ export class PtmPositionViewerComponent implements OnInit {
   _dbSelected: string[] = []
   currentLayout: any = {}
   netPhosMap: any = {}
+  kinases: any = {}
   set dbSelected(value: string[]) {
     for (let d of this._dbSelected) {
       if (!value.includes(d)) {
@@ -185,7 +186,7 @@ export class PtmPositionViewerComponent implements OnInit {
     }
 
     const kinaseAcc: string[] = []
-
+    const accs: string[] = []
     for (const t in this.alignedMap) {
       for (const a of this.alignedMap[t]) {
         if (!this.alignedPosition[a.alignedPosition]) {
@@ -198,15 +199,27 @@ export class PtmPositionViewerComponent implements OnInit {
           this.alignedPosition[a.alignedPosition][t]["kinases"] = this.getKinase(a.actualPosition)
           for (const k of this.alignedPosition[a.alignedPosition][t]["kinases"]) {
             const uni = this.uniprot.getUniprotFromAcc(k.acc)
-            if (!uni) {
-              kinaseAcc.push(k.acc)
+            const accession = this.uniprot.Re.exec(k.acc)
+            if (accession) {
+              if (!uni) {
+                this.dataService.dataMap.set(k.acc, accession[1])
+                this.uniprot.accMap.set(k.acc, accession[1])
+                kinaseAcc.push(accession[1])
+                accs.push(k.acc)
+              } else {
+                this.kinases[k.acc] = uni
+              }
             }
           }
         }
       }
     }
     if (kinaseAcc.length > 0) {
-      this.uniprot.UniProtParseGet(kinaseAcc, false).then()
+      this.uniprot.UniProtParseGet(kinaseAcc, false).then(r => {
+        for (const k of accs) {
+          this.kinases[k] = this.uniprot.getUniprotFromAcc(k)
+        }
+      })
     }
 
 
@@ -378,8 +391,10 @@ export class PtmPositionViewerComponent implements OnInit {
     ref.componentInstance.data = this.netPhosMap[position]
   }
 
-  openKinaseInfo(acc: string) {
-    const ref = this.modal.open(KinaseInfoComponent)
-    ref.componentInstance.name = acc
+  openKinaseInfo(kinase: any) {
+    console.log(this.kinases)
+    console.log(kinase)
+    const ref = this.modal.open(KinaseInfoComponent, {size: "xl"})
+    ref.componentInstance.uni = this.kinases[kinase.acc]
   }
 }

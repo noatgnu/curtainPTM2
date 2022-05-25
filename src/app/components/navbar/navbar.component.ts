@@ -3,6 +3,8 @@ import {WebService} from "../../web.service";
 import {DataService} from "../../data.service";
 import {ScrollService} from "../../scroll.service";
 import {SettingsService} from "../../settings.service";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {SampleAnnotationComponent} from "../sample-annotation/sample-annotation.component";
 
 @Component({
   selector: 'app-navbar',
@@ -13,7 +15,12 @@ export class NavbarComponent implements OnInit {
   @Input() finished: boolean = false
   @Input() uniqueLink: string = ""
   filterModel: string = ""
-  constructor(public web: WebService, public data: DataService, private scroll: ScrollService, private settings: SettingsService) { }
+  constructor(
+    public web: WebService,
+    public data: DataService,
+    private scroll: ScrollService,
+    private settings: SettingsService,
+    private modal: NgbModal) { }
 
   ngOnInit(): void {
   }
@@ -47,7 +54,6 @@ export class NavbarComponent implements OnInit {
   }
 
   scrollTo() {
-
     let res: string[] = []
     switch (this.data.searchType) {
       case "Gene names":
@@ -69,5 +75,12 @@ export class NavbarComponent implements OnInit {
       }
       this.scroll.scrollToID(primaryIDs+"scrollID")
     }
+  }
+
+  openAnnotation() {
+    const ref = this.modal.open(SampleAnnotationComponent, {size: "lg"})
+    ref.closed.subscribe(data => {
+      this.settings.settings.project = data
+    })
   }
 }

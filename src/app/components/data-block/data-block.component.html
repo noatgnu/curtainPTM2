@@ -30,7 +30,10 @@
         <p>PTM identified:</p>
         <ul>
           <li *ngFor="let u of unidList">
-            <span (click)="scrollTop(u.id)" [ngClass]="{'badge bg-success': dataService.selectedMap[u.id]}">{{u.position}} ({{u.residue}}) {{u.id}}</span>
+            <span (click)="scrollTop(u.id)"
+                  [ngClass]="{'badge bg-success': dataService.selectedMap[u.id]}">
+              {{u.position}} ({{u.residue}}) {{u.id}}
+            </span>
           </li>
         </ul>
       </div>

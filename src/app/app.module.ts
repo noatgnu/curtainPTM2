@@ -32,6 +32,10 @@ import { PtmPositionViewerComponent } from './components/ptm-position-viewer/ptm
 import { NavbarComponent } from './components/navbar/navbar.component';
 import {NetphosKinasesComponent} from "./components/netphos-kinases/netphos-kinases.component";
 import { KinaseInfoComponent } from './components/kinase-info/kinase-info.component';
+import {NgxPrintModule} from "ngx-print";
+import {QuillModule} from "ngx-quill";
+import {SampleAnnotationComponent} from "./components/sample-annotation/sample-annotation.component";
+import {PrideComponent} from "./components/pride/pride.component";
 PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
@@ -57,7 +61,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     PtmPositionViewerComponent,
     NavbarComponent,
     NetphosKinasesComponent,
-    KinaseInfoComponent
+    KinaseInfoComponent,
+    SampleAnnotationComponent,
+    PrideComponent
   ],
   imports: [
     BrowserModule,
@@ -67,7 +73,9 @@ PlotlyModule.plotlyjs = PlotlyJS;
     HttpClientModule,
     PlotlyModule,
     ColorPickerModule,
-    ContextMenuModule
+    ContextMenuModule,
+    NgxPrintModule,
+    QuillModule.forRoot(),
   ],
   providers: [HttpClient, ContextMenuService],
   bootstrap: [AppComponent]

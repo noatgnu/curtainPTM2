@@ -1,3 +1,5 @@
+import {Project} from "./project";
+
 export class Settings {
   fetchUniprot: boolean = true
   inputDataCols: any = {}
@@ -14,4 +16,5 @@ export class Settings {
   currentID: string = ""
   fdrCurveText: string = ""
   fdrCurveTextEnable: boolean = false
+  project: Project = new Project()
 }

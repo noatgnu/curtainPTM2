@@ -110,4 +110,16 @@ export class WebService {
   getKinase(id: string) {
     return this.http.get("http://klifs.net/api_v2/kinase_ID?kinase_name=" + id, {responseType: "json", observe: "body", headers: {accept: "application/json"}})
   }
+
+  getUniProtNew(acc: string) {
+    return this.http.get("https://rest.uniprot.org/uniprotkb/"+acc+".json", {headers: {accept: "application/json"}, responseType: "json", observe: "body"})
+  }
+
+  getPrideData(accession: string) {
+    return this.http.get("https://www.ebi.ac.uk/pride/ws/archive/v2/projects/"+accession, {
+      responseType: "json",
+      observe: "body", headers: {
+        "accept": "application/json"
+      }})
+  }
 }

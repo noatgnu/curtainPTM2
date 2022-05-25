@@ -19,6 +19,9 @@ export class BarChartComponent implements OnInit {
   conditionB: string = ""
   conditions: string[] = []
   testType: string = "ANOVA"
+
+  barChartErrorType: string = "Standard Error"
+
   @Input() set data(value: any) {
     this._data = value
     if (this._data[this.dataService.rawForm.primaryIDs]) {
@@ -233,6 +236,14 @@ export class BarChartComponent implements OnInit {
       const s = new Series(graph[g])
       const std =  s.std()
       const standardError = std/Math.sqrt(s.count())
+      let error = std
+      switch (this.barChartErrorType) {
+        case "Standard Error":
+          error = standardError
+          break
+        default:
+          break
+      }
       const mean = s.mean()
       graphData.push({
         x: [g], y: [mean],
@@ -240,7 +251,7 @@ export class BarChartComponent implements OnInit {
         mode: 'markers',
         error_y: {
           type: 'data',
-          array: [standardError],
+          array: [error],
           visible: true
         },
         marker: {

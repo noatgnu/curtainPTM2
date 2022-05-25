@@ -69,7 +69,7 @@
         <span *ngIf="alignedPosition[d.alignedPosition][g.name]">({{alignedPosition[d.alignedPosition][g.name].actualPosition+1}})</span>
         <span *ngIf="g.name === 'PhosphoSite Plus (Phosphorylation)' && alignedPosition[d.alignedPosition][g.name]">
           <ng-container *ngIf="alignedPosition[d.alignedPosition][g.name].kinases.length > 0">
-            <span placement="top" ngbTooltip="Kinase" class="badge bg-danger ml-2" *ngFor="let k of alignedPosition[d.alignedPosition][g.name].kinases" (click)="openKinaseInfo(k.acc)">{{k.kinase}}</span>
+            <span placement="top" ngbTooltip="Kinase" class="badge bg-danger ml-2" *ngFor="let k of alignedPosition[d.alignedPosition][g.name].kinases" (click)="openKinaseInfo(k)">{{k.kinase}}</span>
           </ng-container>
         </span>
       </td>

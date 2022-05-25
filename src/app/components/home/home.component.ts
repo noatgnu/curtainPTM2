@@ -11,6 +11,7 @@ import {Differential} from "../../classes/differential";
 import {Raw} from "../../classes/raw";
 import {InputFile} from "../../classes/input-file";
 import {SettingsService} from "../../settings.service";
+import {Project} from "../../classes/project";
 
 @Component({
   selector: 'app-home',
@@ -68,6 +69,10 @@ export class HomeComponent implements OnInit {
     } else {
       this.data.differential = new InputFile(fromCSV(object.processed), "processedFile.txt", object.processed)
     }
+    if (!object.settings.project) {
+      object.settings.project = new Project()
+    }
+
     if (object.settings.version) {
       if (object.settings.version === 2) {
 
