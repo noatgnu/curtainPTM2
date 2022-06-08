@@ -24,7 +24,7 @@ export class PtmPositionViewerComponent implements OnInit {
   differential: IDataFrame = new DataFrame()
   sequences: any = {}
   sourceMap: any = {}
-  unidMap: any = {"UniProt": {}, "Experimental Data": {}}
+  unidMap: any = {"Experimental Data": {}, "UniProt": {}}
   aligned: boolean = false
   divIDMap: any = {}
   order: string[] = ["Experimental Data", "UniProt"]

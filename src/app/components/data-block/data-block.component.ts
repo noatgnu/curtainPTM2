@@ -29,6 +29,7 @@ export class DataBlockComponent implements OnInit {
       const first = this._data.first()
       this.accessionID = first[this.dataService.differentialForm.accession]
       this.title = this.accessionID
+      this.sourceMap["Experimental Data"] = this.accessionID
       const uni: any = this.uniprot.getUniprotFromAcc(this.accessionID)
       if (uni) {
         this.uni = uni
@@ -59,7 +60,7 @@ export class DataBlockComponent implements OnInit {
       unidList.push({position: r[this.dataService.differentialForm.position], residue: this.allSequences[this.accessionID][r[this.dataService.differentialForm.position]-1], id: r[this.dataService.differentialForm.primaryIDs], score: r[this.dataService.differentialForm.score]})
     }
     this.unidList = unidList
-    this.sourceMap["Experimental Data"] = this.accessionID
+
   }
   accessionID: string = ""
   constructor(public dataService: DataService, private uniprot: UniprotService, private scroll: ScrollService) { }
