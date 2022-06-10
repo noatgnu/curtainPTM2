@@ -17,4 +17,7 @@ export class Settings {
   fdrCurveText: string = ""
   fdrCurveTextEnable: boolean = false
   project: Project = new Project()
+  sampleOrder: any = {}
+  sampleVisible: any = {}
+  conditionOrder: string[] = []
 }

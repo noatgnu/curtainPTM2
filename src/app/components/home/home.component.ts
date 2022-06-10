@@ -72,7 +72,15 @@ export class HomeComponent implements OnInit {
     if (!object.settings.project) {
       object.settings.project = new Project()
     }
-
+    if (!object.settings.sampleOrder) {
+      object.settings.sampleOrder = {}
+    }
+    if (!object.settings.sampleVisible) {
+      object.settings.sampleVisible = {}
+    }
+    if (!object.settings.conditionOrder) {
+      object.settings.conditionOrder = []
+    }
     if (object.settings.version) {
       if (object.settings.version === 2) {
 

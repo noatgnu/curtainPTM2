@@ -5,6 +5,7 @@ import {ScrollService} from "../../scroll.service";
 import {SettingsService} from "../../settings.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {SampleAnnotationComponent} from "../sample-annotation/sample-annotation.component";
+import {SampleOrderAndHideComponent} from "../sample-order-and-hide/sample-order-and-hide.component";
 
 @Component({
   selector: 'app-navbar',
@@ -82,5 +83,8 @@ export class NavbarComponent implements OnInit {
     ref.closed.subscribe(data => {
       this.settings.settings.project = data
     })
+  }
+  openSampleSettings() {
+    const ref = this.modal.open(SampleOrderAndHideComponent)
   }
 }

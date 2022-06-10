@@ -36,6 +36,7 @@ import {NgxPrintModule} from "ngx-print";
 import {QuillModule} from "ngx-quill";
 import {SampleAnnotationComponent} from "./components/sample-annotation/sample-annotation.component";
 import {PrideComponent} from "./components/pride/pride.component";
+import { SampleOrderAndHideComponent } from './components/sample-order-and-hide/sample-order-and-hide.component';
 PlotlyModule.plotlyjs = PlotlyJS;
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ PlotlyModule.plotlyjs = PlotlyJS;
     NetphosKinasesComponent,
     KinaseInfoComponent,
     SampleAnnotationComponent,
-    PrideComponent
+    PrideComponent,
+    SampleOrderAndHideComponent
   ],
   imports: [
     BrowserModule,

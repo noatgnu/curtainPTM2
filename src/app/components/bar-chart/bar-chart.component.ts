@@ -5,6 +5,8 @@ import {UniprotService} from "../../uniprot.service";
 import {PlotlyService} from "angular-plotly.js";
 import {WebService} from "../../web.service";
 import {StatsService} from "../../stats.service";
+import {Settings} from "../../classes/settings";
+import {SettingsService} from "../../settings.service";
 
 @Component({
   selector: 'app-bar-chart',
@@ -99,10 +101,16 @@ export class BarChartComponent implements OnInit {
     },
     margin: {r: 40, l: 40, b: 120, t: 100}
   }
-  constructor(private stats: StatsService, private web: WebService, public dataService: DataService, private uniprot: UniprotService) {
+  constructor(private settings: SettingsService, private stats: StatsService, private web: WebService, public dataService: DataService, private uniprot: UniprotService) {
     this.dataService.finishedProcessingData.subscribe(data => {
       if (data) {
 
+      }
+    })
+    this.dataService.redrawTrigger.subscribe(data => {
+      if (data) {
+        this.drawBarChart()
+        this.drawAverageBarChart()
       }
     })
   }
@@ -123,22 +131,24 @@ export class BarChartComponent implements OnInit {
     const shapes: any[] = []
     let sampleNumber: number = 0
     for (const s in this.dataService.sampleMap) {
-      sampleNumber ++
-      const condition = this.dataService.sampleMap[s].condition
-      if (!graph[condition]) {
-        graph[condition] = {
-          x: [],
-          y: [],
-          type: "bar",
-          marker: {
-            color: this.dataService.colorMap[condition]
-          },
-          name: condition,
-          showlegend: false
+      if (this.settings.settings.sampleVisible[s]) {
+        sampleNumber ++
+        const condition = this.dataService.sampleMap[s].condition
+        if (!graph[condition]) {
+          graph[condition] = {
+            x: [],
+            y: [],
+            type: "bar",
+            marker: {
+              color: this.dataService.colorMap[condition]
+            },
+            name: condition,
+            showlegend: false
+          }
         }
+        graph[condition].x.push(s)
+        graph[condition].y.push(this._data[s])
       }
-      graph[condition].x.push(s)
-      graph[condition].y.push(this._data[s])
     }
     let currentSampleNumber: number = 0
     for (const g in graph) {
@@ -187,12 +197,14 @@ export class BarChartComponent implements OnInit {
     const graph: any = {}
     let sampleNumber: number = 0
     for (const s in this.dataService.sampleMap) {
-      sampleNumber ++
-      const condition = this.dataService.sampleMap[s].condition
-      if (!graph[condition]) {
-        graph[condition] = []
+      if (this.settings.settings.sampleVisible[s]) {
+        sampleNumber ++
+        const condition = this.dataService.sampleMap[s].condition
+        if (!graph[condition]) {
+          graph[condition] = []
+        }
+        graph[condition].push(this._data[s])
       }
-      graph[condition].push(this._data[s])
     }
     for (const g in graph) {
       const box = {

@@ -62,7 +62,7 @@ export class DataService {
     '#7f7f7f',
     '#bcbd22',
     '#17becf']
-
+  redrawTrigger: Subject<boolean> = new Subject()
   colorMap: any = {}
   constructor(private settings: SettingsService, private uniprot: UniprotService) { }
 
