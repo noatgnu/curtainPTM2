@@ -170,7 +170,7 @@ export class UniprotService {
   }
 
   getUniprotFasta(accession_id: string) {
-    return this.http.get("https://www.uniprot.org/uniprot/"+accession_id+".fasta", {responseType: "text", observe: "body"})
+    return this.http.get("https://rest.uniprot.org/uniprotkb/"+accession_id+".fasta", {responseType: "text", observe: "body"})
   }
 
   parseFasta(data: string) {
