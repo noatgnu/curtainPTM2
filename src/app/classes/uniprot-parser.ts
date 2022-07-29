@@ -5,11 +5,12 @@ export class UniprotParser {
   baseURL: string = "https://rest.uniprot.org/idmapping/run"
   checkStatusURL: string = "https://rest.uniprot.org/idmapping/status/"
   format: string = "tsv"
-  columns: string = "accession,id,gene_names,protein_name,organism_name,organism_id,length,xref_refseq,go_id,go_p,go_c,go_f,cc_subcellular_location,ft_topo_dom,ft_carbohyd,mass,cc_mass_spectrometry,sequence,ft_var_seq,cc_alternative_products"
+  columns: string = "accession,id,gene_names,protein_name,organism_name,organism_id,length,xref_refseq,go_id,go_p,go_c,go_f,cc_subcellular_location,ft_topo_dom,ft_carbohyd,mass,cc_mass_spectrometry,sequence,ft_var_seq,cc_alternative_products,cc_function,ft_domain,xref_string"
   jobCollections: any[] = []
   pollInterval: any
   result: Subject<string> = new Subject<string>()
   http: HttpClient
+
   constructor(http: HttpClient) {
     this.http = http
   }
@@ -34,7 +35,7 @@ export class UniprotParser {
         subset = data.slice(i)
       }
       const jobId = await this.postJob(subset)
-      this.jobCollections.push({jobId: jobId, completed: false})
+      this.jobCollections.push({jobId: jobId, completed: false, started: false})
     }
   }
 
@@ -43,28 +44,33 @@ export class UniprotParser {
     this.pollInterval = interval(5000).subscribe(_ => {
         for (const j of this.jobCollections) {
           if (!j.completed) {
-            this.http.get(this.checkStatusURL + j.jobId, {observe: "response"}).subscribe(data => {
-              const a = data.headers.get("X-Total-Results")
-              if (a) {
-                j.completed = true
-
-                const options: Map<string, string> = new Map<string, string>(
-                  [["format", this.format], ["size", "500"], ["fields", this.columns], ["includeIsoform", "true"]]
-                )
-                this.http.get(data.url + "/?" + this.toParamString(options), {
-                  responseType: "text",
-                  observe: "body"
-                }).subscribe(
-                  data => {
-                    jobN--
-                    this.result.next(data)
+            if (!j.started) {
+              j.started = true
+              this.http.get(this.checkStatusURL + j.jobId, {observe: "response"}).subscribe(data => {
+                const a = data.headers.get("X-Total-Results")
+                if (a) {
+                  j.completed = true
+                  const options: Map<string, string> = new Map<string, string>(
+                    [["format", this.format], ["size", "500"], ["fields", this.columns], ["includeIsoform", "true"]]
+                  )
+                  this.http.get(data.url + "/?" + this.toParamString(options), {
+                    responseType: "text",
+                    observe: "body"
+                  }).subscribe(
+                    data => {
+                      jobN--
+                      this.result.next(data)
+                    }
+                  )
+                  if (jobN === 0) {
+                    this.pollInterval.unsubscribe()
                   }
-                )
-                if (jobN === 0) {
-                  this.pollInterval.unsubscribe()
+                } else {
+                  j.started = false
                 }
-              }
-            })
+              })
+            }
+
           }
         }
       }

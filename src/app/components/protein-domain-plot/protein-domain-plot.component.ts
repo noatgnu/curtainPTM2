@@ -22,7 +22,7 @@ export class ProteinDomainPlotComponent implements OnInit {
       hoverinfo: "text",
       base: 1
     }
-    for (const d of value["Domain [FT]"]) {
+    for (const d of value["Domain[FT]"]) {
       if (d.start-1 > last) {
         waterfallPlot.measure.push("relative")
         waterfallPlot.y.push("Other")

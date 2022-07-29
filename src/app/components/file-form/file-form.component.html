@@ -53,6 +53,14 @@
                 </div>
               </div>
               <div class="col-3">
+                <label for="score">Select Probability Score</label>
+                <select class="form-select" id="score" aria-label="Select Fold Change" [(ngModel)]="data.differentialForm.score">
+                  <option *ngFor="let c of data.differential.df.getColumnNames()" [value]="c">
+                    {{c}}
+                  </option>
+                </select>
+              </div>
+              <div class="col-3">
                 <label for="significant">Select Significant</label>
                 <select class="form-select" id="Significant" aria-label="Select Significant" [(ngModel)]="data.differentialForm.significant">
                   <option *ngFor="let c of data.differential.df.getColumnNames()" [value]="c">
