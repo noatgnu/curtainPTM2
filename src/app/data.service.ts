@@ -48,7 +48,7 @@ export class DataService {
   annotatedMap: any = {}
   selectedMap: any = {}
   selectOperationNames: string[] = []
-  searchType: string = "Gene names"
+  searchType: string = "Gene Names"
   page: number = 0
   dbIDMap: any = {}
   defaultColorList = [
@@ -118,7 +118,7 @@ export class DataService {
 
   searchFilter(term: string, searchType: string) {
     switch (searchType) {
-      case "Gene names":
+      case "Gene Names":
         return this.allGenes.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,10)
       case "Accession IDs":
         return this.accessionList.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,10)
@@ -139,7 +139,7 @@ export class DataService {
 
   searchFilterLimited(term: string, searchType: string) {
     switch (searchType) {
-      case "Gene names":
+      case "Gene Names":
         return this.selectedGenes.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,10)
       case "Accession IDs":
         return this.selectedAccessions.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0,10)

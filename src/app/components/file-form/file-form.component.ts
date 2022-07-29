@@ -182,6 +182,7 @@ export class FileFormComponent implements OnInit {
           }
           this.data.accessionToPrimaryIDs[accession[1]][r[this.data.differentialForm.primaryIDs]] = true
           this.uniprot.accMap.set(r[this.data.differentialForm.primaryIDs], accession[1])
+
           if (!this.uniprot.results.has(accession[1])) {
             if (!accList.includes(accession[1])) {
               accList.push(accession[1])
@@ -189,47 +190,51 @@ export class FileFormComponent implements OnInit {
           }
         }
       }
-
       if (accList.length > 0) {
-        this.uniprot.UniProtParseGet(accList, false).then(r=> {
-          if (r) {
-            const allGenes: string[] = []
-            for (const p of this.data.accessionList) {
-              const uni = this.uniprot.getUniprotFromAcc(p)
-              if (uni) {
-                if (uni["Gene names"]) {
-                  if (uni["Gene names"] !== "") {
-                    if (!allGenes.includes(uni["Gene names"])) {
-                      allGenes.push(uni["Gene names"])
-                      if (!this.data.genesMap[uni["Gene names"]])  {
-                        this.data.genesMap[uni["Gene names"]] = {}
-                        this.data.genesMap[uni["Gene names"]][uni["Gene names"]] = true
-                      }
-                      for (const n of uni["Gene names"].split(";")) {
-                        if (!this.data.genesMap[n]) {
-                          this.data.genesMap[n] = {}
+        this.uniprot.PrimeAPIUniProtParser(accList).then(r => {
+          this.uniprot.uniprotParseStatus.subscribe(d => {
+            if (d) {
+              const allGenes: string[] = []
+              for (const p of this.data.accessionList) {
+                const uni = this.uniprot.getUniprotFromAcc(p)
+                if (uni) {
+                  if (uni["Gene Names"]) {
+                    if (uni["Gene Names"] !== "") {
+                      if (!allGenes.includes(uni["Gene Names"])) {
+                        allGenes.push(uni["Gene Names"])
+                        if (!this.data.genesMap[uni["Gene Names"]])  {
+                          this.data.genesMap[uni["Gene Names"]] = {}
+                          this.data.genesMap[uni["Gene Names"]][uni["Gene Names"]] = true
                         }
-                        this.data.genesMap[n][uni["Gene names"]] = true
-                      }
-                      if (!this.uniprot.geneNameToPrimary[uni["Gene names"]]) {
-                        this.uniprot.geneNameToPrimary[uni["Gene names"]] = {}
-                      }
-                      if (this.data.accessionToPrimaryIDs[uni["Entry"]]) {
-                        for (const e in this.data.accessionToPrimaryIDs[uni["Entry"]]) {
-                          this.uniprot.geneNameToPrimary[uni["Gene names"]][e] = true
+                        for (const n of uni["Gene Names"].split(";")) {
+                          if (!this.data.genesMap[n]) {
+                            this.data.genesMap[n] = {}
+                          }
+                          this.data.genesMap[n][uni["Gene Names"]] = true
+                        }
+                        if (!this.uniprot.geneNameToPrimary[uni["Gene Names"]]) {
+                          this.uniprot.geneNameToPrimary[uni["Gene Names"]] = {}
+                        }
+                        if (this.data.accessionToPrimaryIDs[uni["Entry"]]) {
+                          for (const e in this.data.accessionToPrimaryIDs[uni["Entry"]]) {
+                            this.uniprot.geneNameToPrimary[uni["Gene Names"]][e] = true
+                          }
                         }
                       }
                     }
                   }
                 }
               }
-            }
-            this.data.allGenes = allGenes
+              this.data.allGenes = allGenes
 
-            this.finished.emit(true)
-            this.updateProgressBar(100, "Finished")
-          }
+              this.finished.emit(true)
+              this.updateProgressBar(100, "Finished")
+            }
+          })
         })
+      } else {
+        this.finished.emit(true)
+        this.updateProgressBar(100, "Finished")
       }
     } else {
       if (this.data.differentialForm.geneNames !== "") {

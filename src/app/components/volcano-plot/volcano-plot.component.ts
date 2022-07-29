@@ -132,7 +132,7 @@ export class VolcanoPlotComponent implements OnInit {
       if (this.dataService.fetchUniProt) {
         const r = this.uniprot.getUniprotFromAcc(accID)
         if (r) {
-          geneNames = r["Gene names"]
+          geneNames = r["Gene Names"]
         }
       } else {
         if (this.dataService.differentialForm.geneNames !== "") {
@@ -358,8 +358,8 @@ export class VolcanoPlotComponent implements OnInit {
       let title = a[this.dataService.differentialForm.primaryIDs]
       const uni = this.uniprot.getUniprotFromAcc(a[this.dataService.differentialForm.primaryIDs])
       if (uni) {
-        if (uni["Gene names"] !== "") {
-          title = uni["Gene names"] + "(" + title + ")"
+        if (uni["Gene Names"] !== "") {
+          title = uni["Gene Names"] + "(" + title + ")"
         }
       }
       if (!this.annotated[title]) {
@@ -394,8 +394,8 @@ export class VolcanoPlotComponent implements OnInit {
       let title = d[this.dataService.differentialForm.primaryIDs]
       const uni = this.uniprot.getUniprotFromAcc(d[this.dataService.differentialForm.primaryIDs])
       if (uni) {
-        if (uni["Gene names"] !== "") {
-          title = uni["Gene names"] + "(" + title + ")"
+        if (uni["Gene Names"] !== "") {
+          title = uni["Gene Names"] + "(" + title + ")"
         }
       }
       if (this.annotated[title]) {

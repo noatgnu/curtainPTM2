@@ -57,7 +57,7 @@ export class NavbarComponent implements OnInit {
   scrollTo() {
     let res: string[] = []
     switch (this.data.searchType) {
-      case "Gene names":
+      case "Gene Names":
         res = this.data.getPrimaryFromGeneNames(this.filterModel)
         break
       case "Accession IDs":

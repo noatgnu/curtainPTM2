@@ -163,9 +163,9 @@ export class HomeComponent implements OnInit {
       this.data.selectedAccessions.push(s[this.data.differentialForm.accession])
       const uni = this.uniprot.getUniprotFromAcc(s[this.data.differentialForm.accession])
       if (uni) {
-        if (uni["Gene names"] !== "") {
-          if (!this.data.selectedGenes.includes(uni["Gene names"])) {
-            this.data.selectedGenes.push(uni["Gene names"])
+        if (uni["Gene Names"] !== "") {
+          if (!this.data.selectedGenes.includes(uni["Gene Names"])) {
+            this.data.selectedGenes.push(uni["Gene Names"])
           }
         }
       }
