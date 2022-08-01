@@ -21,6 +21,7 @@ export class UniprotService {
   constructor(private http: HttpClient, private web: WebService) { }
 
   async PrimeAPIUniProtParser(accList: string[]) {
+    this.uniprotParseStatus.next(false)
     const parser = new UniprotParser(this.http)
     await parser.processData(accList)
     this.run = parser.jobCollections.length

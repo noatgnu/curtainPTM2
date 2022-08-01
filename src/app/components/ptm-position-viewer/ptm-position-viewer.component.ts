@@ -215,14 +215,16 @@ export class PtmPositionViewerComponent implements OnInit {
       }
     }
     if (kinaseAcc.length > 0) {
-      this.uniprot.UniProtParseGet(kinaseAcc, false).then(r => {
-        for (const k of accs) {
-          this.kinases[k] = this.uniprot.getUniprotFromAcc(k)
-        }
+      this.uniprot.PrimeAPIUniProtParser(kinaseAcc).then(r => {
+        this.uniprot.uniprotParseStatus.subscribe(d => {
+          if (d) {
+            for (const k of accs) {
+              this.kinases[k] = this.uniprot.getUniprotFromAcc(k)
+            }
+          }
+        })
       })
     }
-
-
     this.graphData = Object.values(temp)
   }
 
